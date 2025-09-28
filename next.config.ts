@@ -100,8 +100,6 @@ const nextConfig: NextConfig = {
   // Skip environment validation for production build
   // skipEnvironmentVariableValidation: process.env.NODE_ENV === 'production',
 
-  // Optimize bundle for Cloudflare
-  swcMinify: true,
 
   // Configure TypeScript strict mode for production
   typescript: {
