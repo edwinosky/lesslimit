@@ -1,0 +1,54 @@
+name = "lesslimit"
+main = ".output/index.js"
+compatibility_date = "2024-09-27"
+compatibility_flags = ["nodejs_compat"]
+
+# Development configuration
+[dev]
+port = 8788
+# local_protocol = "https"  # Uncomment for HTTPS in local development
+
+# Environment variables for production
+[vars]
+NODE_ENV = "production"
+
+# Account settings (you'll need to update with your account ID)
+account_id = "your-account-id-here"  # Replace with actual Cloudflare account ID
+
+# Custom domain configuration (uncomment and update when ready)
+# routes = [
+#   { pattern = "your-domain.com", zone_name = "your-domain.com" },
+#   { pattern = "www.your-domain.com", zone_name = "your-domain.com" },
+# ]
+
+# Rate limiting (uncomment to enable)
+# [[rules]]
+# description = "Rate limiting for API calls"
+# type = "RateLimit"
+# configuration = {
+#   requests_per_period = 1000,
+#   period = 60,  # seconds
+# }
+# routes = [{ pattern = "/*" }]
+
+# Cache configuration (uncomment to add custom caching)
+# cache = [
+#   { pattern = "/api/*", ttl = 0 },      # No cache for API calls
+#   { pattern = "/_next/*", ttl = 31536000 }, # 1 year for static assets
+#   { pattern = "/favicon.ico", ttl = 86400 },  # 24 hours for favicon
+# ]
+
+# Security headers
+[[headers]]
+for = "/*"
+[headers.values]
+X-Frame-Options = "DENY"
+X-XSS-Protection = "1; mode=block"
+X-Content-Type-Options = "nosniff"
+Referrer-Policy = "strict-origin-when-cross-origin"
+Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https: wss:;"
+Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+
+# Analytics (uncomment to enable)
+# [analytics_engine_datasets]
+# dataset = "lesslimit-analytics"

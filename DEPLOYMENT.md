@@ -1,8 +1,8 @@
 # LessLimit DApp Deployment Guide
 
-## 🚀 Despliegue en Cloudflare Pages
+## 🚀 Despliegue en Cloudflare Workers
 
-Esta aplicación Next.js está configurada para desplegarse en Cloudflare Pages con compatibilidad completa.
+Esta aplicación Next.js está configurada para desplegarse como un **Cloudflare Worker service**, lo que proporciona mejor rendimiento y más flexibilidad que Cloudflare Pages.
 
 ### 📋 Pre-requisitos
 
@@ -15,6 +15,7 @@ Esta aplicación Next.js está configurada para desplegarse en Cloudflare Pages 
    ```bash
    wrangler auth login
    ```
+   > **IMPORTANTE:** Usa `wrangler auth login` (OAuth) para máxima compatibilidad con Workers. Los tokens API requieren configuración especial para operaciones completas.
 
 ### ⚙️ Configuración Inicial
 
@@ -23,7 +24,6 @@ Esta aplicación Next.js está configurada para desplegarse en Cloudflare Pages 
 Reemplaza `"your-account-id-here"` con tu Account ID real de Cloudflare:
 
 ```toml
-[pages_store]
 account_id = "tu-account-id-real-aqui"
 ```
 
@@ -52,91 +52,54 @@ npm install
 # 2. Construir aplicación
 npm run build
 
-# 3. Desplegar a Cloudflare Pages
-npm run deploy
+# 3. Desplegar como Cloudflare Worker
+npm run build:deploy
 
 # 4. Ver el resultado
-# URL: https://lesslimit.pages.dev (o el dominio personalizado que configures)
+wrangler tail  # Para ver logs en tiempo real
+# URL: https://lesslimit.your-subdomain.workers.dev
 ```
 
-#### Método 2: Despliegue Automático desde GitHub (Recomendado para producción)
+#### Método 2: Despliegue Manual desde Cloudflare Dashboard
 
-**💡 PASO A PASO COMPLETO:**
-
-##### **Paso 1: Preparar Repositorio GitHub**
-```bash
-# Crear repo en GitHub
-git init
-git add .
-git commit -m "🚀 Ready for production deployment"
-git branch -M main
-git remote add origin https://github.com/tu-usuario/lesslimit.git
-git push -u origin main
-```
-
-##### **Paso 2: Conectar GitHub a Cloudflare Pages**
-1. **Ve a Cloudflare Dashboard:**
+1. **Ve al Cloudflare Dashboard**
    - Entra a [dash.cloudflare.com](https://dash.cloudflare.com)
-   - Ve a sección "Pages" en el menú lateral
+   - Ve a la sección "Workers & Pages" → "Workers"
 
-2. **Crear Project:**
-   - Click "Create a project"
-   - Selecciona "Connect to Git" → "GitHub" o tu proveedor Git
+2. **Crear Worker**
+   - Click "Create application" → "Create Worker"
+   - Choose "Deploy with Wrangler" (aunque conectes manualmente)
 
-3. **Configurar GitHub:**
-   - **Repository name:** `tu-usuario/lesslimit`
-   - **Branch to deploy:** `main` (o la rama que prefieras)
-   - Click "Begin setup"
+3. **Conectar con Wrangler CLI**
+   ```bash
+   # Ya tienes la configuración en wrangler.toml
+   npm run build:deploy
+   ```
 
-##### **Paso 3: Configurar Build Settings**
-En la página de configuración de Cloudflare Pages, establece:
-
-- **Build Settings** → `Framework preset` → `Next.js`
-- **Build command:** `npm run build`
-- **Build output directory:** `.output`
-- **Root directory:** `/` (raíz del repositorio)
-
-##### **Paso 4: Environment Variables**
-En la sección "Environment variables", agrega:
-
-```
-# Variables de producción (opcional - configúralas según necesites)
-NODE_ENV = production
-```
-
-##### **Paso 5: URL Final**
-Después de completar la configuración:
-
-- ✅ **URL automática:** `https://lesslimit.pages.dev`
-- ✅ **Dominoio personalizado:** Configura DNS si tienes dominio propio
-
-##### **Paso 6: Despliegue Automático**
-**¡Cada push a GitHub ahora desplegará automáticamente!**
-
-```bash
-# Ejemplo workflow típico:
-git add .
-git commit -m "✨ Added new feature"
-git push origin main
-# → Despliegue automático en Cloudflare Pages en segundos ✨
-```
+4. **Configurar dominio personalizado (opcional)**
+   - En la pestaña "Triggers" de tu worker
+   - Agrega routes personalizadas
 
 #### 🔄 Configuración de Dominio Personalizado (Opcional)
 
-Si quieres usar tu propio dominio en lugar de `lesslimit.pages.dev`:
+Si quieres usar tu propio dominio en lugar del `.workers.dev`:
 
-1. **Configurar DNS:**
-   - Ve a tu registrador de dominio
-   - Agrega un CNAME record apuntando a `lesslimit.pages.dev`
+1. **Configurar routes en wrangler.toml:**
+   ```toml
+   routes = [
+     { pattern = "your-domain.com", zone_name = "your-domain.com" },
+     { pattern = "www.your-domain.com", zone_name = "your-domain.com" },
+   ]
+   ```
 
-2. **En Cloudflare:**
-   - Ve a Pages → Tu proyecto
-   - Custom domains → Add custom domain
-   - Ingresa tu dominio y sigue las instrucciones
+2. **Desplegar actualización:**
+   ```bash
+   npm run build:deploy
+   ```
 
 3. **Ejemplo:** `https://tradepredictions.com` o `https://lesslimit.app`
 
-⚡ **Resultado:** Cada push a GitHub → despliegue automático → tu dominio personalizado
+⚡ **Resultado:** Acceso directo desde tu dominio personalizado
 
 ### 🔧 Configuración Avanzada
 
@@ -158,8 +121,10 @@ Comentarios de ejemplo incluidos para limitar API calls si es necesario.
 ### 🌐 URLs de Producción
 
 Después del despliegue, tendrás URLs como:
-- `https://lesslimit.pages.dev` (Cloudflare asignado)
-- `https://tudominio.com` (Si configuras custom domain)
+- `https://lesslimit.your-subdomain.workers.dev` (Cloudflare asignado automáticamente)
+- `https://tudominio.com` (Si configuras un dominio personalizado)
+
+> **Nota:** Tu worker estará disponible inmediatamente después del despliegue sin necesidad de configuración adicional.
 
 ### 📊 Monitoreo y Analytics
 
@@ -184,6 +149,25 @@ La aplicación incluye métricas de rendimiento automáticamente.
 - Verifica que las CORS headers estén correctos
 - Asegúrate de que estás usando la URL de producción, no localhost
 
+#### Error: "Authentication error [code: 10000]"
+- **Problema**: Problemas con la autenticación de Wrangler
+- **Solución**: Usa `wrangler auth login` para hacer login nuevamente
+
+#### Error: "El worker no se despliega"
+- **Problema**: Posibles errores en la configuración de `wrangler.toml`
+- **Solución**:
+   1. Verifica que `account_id` esté configurado correctamente
+   2. Asegúrate de que `npm run build` funciona sin errores
+   3. Check que tienes Node.js 18+ instalado
+
+#### Error: "El dominio personalizado no funciona"
+- **Solución**:
+   1. Verifica que el dominio está añadido al DNS de Cloudflare
+   2. Asegúrate de que los routes están configurados correctamente
+   3. Espera unos minutos para propagación de DNS
+
+**Recomendación:** Usa `wrangler auth login` en lugar de tokens API para máxima compatibilidad.
+
 #### Error: "Build falla"
 - Check que `npm run build` funciona localmente
 - Verifica la compatibilidad de dependencias con Cloudflare runtime
@@ -200,8 +184,9 @@ La aplicación incluye métricas de rendimiento automáticamente.
 ### 📞 Support
 
 Si tienes problemas con el despliegue:
-1. Check Cloudflare Pages build logs
+1. Check los logs de Wrangler con `wrangler tail`
 2. Verifica configuración de `wrangler.toml`
 3. Asegúrate de que todas las dependencias se instalen correctamente
+4. Verifica que tienes Node.js 18+ instalado
 
 ¡Tu dApp LessLimit está lista para el mundo! 🎉
