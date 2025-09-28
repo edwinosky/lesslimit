@@ -51,9 +51,9 @@ const nextConfig: NextConfig = {
   },
 
   // Experimental features for better Cloudflare compatibility
-  experimental: {
-    serverComponentsExternalPackages: ['@turf/turf'], // Add any external packages
-  },
+  // experimental: {
+  //   serverComponentsExternalPackages: ['@turf/turf'], // Add any external packages
+  // },
 
   // Reduce console noise in development
   logging: {
@@ -98,7 +98,7 @@ const nextConfig: NextConfig = {
   },
 
   // Skip environment validation for production build
-  skipEnvironmentVariableValidation: process.env.NODE_ENV === 'production',
+  // skipEnvironmentVariableValidation: process.env.NODE_ENV === 'production',
 
   // Optimize bundle for Cloudflare
   swcMinify: true,

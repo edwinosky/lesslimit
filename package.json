@@ -1,16 +1,16 @@
 {
   "name": "lesslimit",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
-    "deploy": "wrangler pages deploy .output --project-name=lesslimit --branch=main --commit-message='Deploy from CLI'",
+    "deploy": "wrangler pages deploy .output --project-name=lesslimit --branch=main'",
     "build:deploy": "npm run build && npm run deploy",
     "cf:auth": "wrangler auth login",
-    "cf:preview": "npm run build && wrangler pages dev .out"
+    "cf:preview": "npm run build && wrangler pages dev .output"
   },
   "dependencies": {
     "@rainbow-me/rainbowkit": "^2.2.8",
