@@ -52,12 +52,12 @@ npm install
 # 2. Construir aplicación
 npm run build
 
-# 3. Desplegar como Cloudflare Worker
+# 3. Desplegar assets como Cloudflare Worker
 npm run build:deploy
 
 # 4. Ver el resultado
 wrangler tail  # Para ver logs en tiempo real
-# URL: https://lesslimit.your-subdomain.workers.dev
+# URL: https://lesslimit.your-subdomain.workers.dev/
 ```
 
 #### Método 2: Despliegue Manual desde Cloudflare Dashboard

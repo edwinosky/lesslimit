@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "include": ["/*"],
+  "exclude": ["/api/*", "/_next/static/*"],
+  "rewrites": [
+    {
+      "source": "/((?!api|_next/static).*)",
+      "destination": "/index.html"
+    }
+  ]
+}
