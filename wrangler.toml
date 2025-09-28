@@ -1,0 +1,6 @@
+name = "lesslimit"
+compatibility_date = "2024-09-27"
+
+[build]
+command = "next build"
+output_directory = ".out"
