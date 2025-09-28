@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "build": "next build --turbopack && cp public/_worker.js .output/index.js",
     "start": "next start",
     "lint": "eslint",
     "deploy": "npx wrangler deploy --assets=.output",

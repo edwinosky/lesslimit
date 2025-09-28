@@ -1,6 +1,9 @@
 name = "lesslimit"
+main = ".output/index.js"
 compatibility_date = "2024-09-27"
 compatibility_flags = ["nodejs_compat"]
+
+# Entry point para servir la aplicación
 
 # Development configuration
 [dev]
