@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAccount } from 'wagmi';
@@ -46,7 +47,7 @@ interface OrderbookData {
   tokenId: string;
 }
 
-export default function Trade() {
+function TradeContent() {
   const searchParams = useSearchParams();
   const marketSlug = searchParams.get('market');
   const router = useRouter();
@@ -546,5 +547,18 @@ export default function Trade() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function Trade() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500 mx-auto"></div>
+        <p className="mt-4 text-xl">Cargando trading...</p>
+      </div>
+    }>
+      <TradeContent />
+    </Suspense>
   );
 }
