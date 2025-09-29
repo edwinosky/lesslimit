@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "build": "next build --turbopack && npm run post-build",
+    "post-build": "cp .assetsignore out/",
     "start": "next start",
     "lint": "eslint",
-    "deploy": "npm run build && npx wrangler deploy",
+    "deploy": "npm run build && wrangler deploy",
     "cf:auth": "wrangler auth login",
     "cf:preview": "npm run build && npx wrangler dev"
   },
