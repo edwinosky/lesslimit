@@ -45,16 +45,6 @@ account_id = "your-account-id-here"  # Replace with actual Cloudflare account ID
 #   { pattern = "/favicon.ico", ttl = 86400 },  # 24 hours for favicon
 # ]
 
-# Security headers
-[[headers]]
-for = "/*"
-[headers.values]
-X-Frame-Options = "DENY"
-X-XSS-Protection = "1; mode=block"
-X-Content-Type-Options = "nosniff"
-Referrer-Policy = "strict-origin-when-cross-origin"
-Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https: wss:;"
-Permissions-Policy = "geolocation=(), microphone=(), camera=()"
 
 # Analytics (uncomment to enable)
 # [analytics_engine_datasets]
