@@ -7,7 +7,7 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
-    "deploy": "npm run build && wrangler deploy",
+    "deploy": "npm run build && npx wrangler deploy",
     "cf:auth": "wrangler auth login",
     "cf:preview": "npm run build && npx wrangler dev"
   },
