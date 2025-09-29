@@ -2,53 +2,10 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   // Cloudflare Pages specific configuration - using functions for API routes
-  // output: 'export', // Removed - conflicts with API routes
+  output: 'export',
   trailingSlash: true, // Recommended for Cloudflare Pages
-  distDir: '.output', // Changed to avoid conflicts with Cloudflare functions
+  // distDir: 'out', // 'distDir' is not allowed with 'output: export'
 
-
-  /* Configuración para manejar cookies autenticadas y desarrollo */
-  async headers() {
-    return [
-      {
-        source: '/(.*)',
-        headers: [
-          {
-            key: 'Access-Control-Allow-Origin',
-            value: '*',
-          },
-          {
-            key: 'Access-Control-Allow-Methods',
-            value: 'GET,POST,PUT,DELETE,OPTIONS',
-          },
-          {
-            key: 'Access-Control-Allow-Headers',
-            value: 'Content-Type,Authorization,X-Account,X-Signing-Message,X-Signature,Cookie',
-          },
-          {
-            key: 'Access-Control-Allow-Credentials',
-            value: 'true',
-          },
-          {
-            key: 'X-Frame-Options',
-            value: 'DENY',
-          },
-          {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block',
-          },
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin',
-          },
-        ],
-      },
-    ];
-  },
 
   // Experimental features for better Cloudflare compatibility
   // experimental: {

@@ -1,9 +1,14 @@
 name = "lesslimit"
-main = ".output/index.js"
 compatibility_date = "2024-09-27"
 compatibility_flags = ["nodejs_compat"]
 
-# Entry point para servir la aplicación
+# Point to the worker script that handles API calls and serves static assets.
+main = "workers/src/index.ts"
+
+# Declaratively bind the static asset directory to the worker.
+# This makes the assets available via `env.ASSETS`.
+[assets]
+directory = "out"
 
 # Development configuration
 [dev]

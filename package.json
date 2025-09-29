@@ -4,13 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build --turbopack && cp public/_worker.js .output/index.js",
+    "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
-    "deploy": "npx wrangler deploy --assets=.output",
-    "build:deploy": "npm run build && npm run deploy",
+    "deploy": "npm run build && wrangler deploy",
     "cf:auth": "wrangler auth login",
-    "cf:preview": "npm run build && npx wrangler dev --assets=.output"
+    "cf:preview": "npm run build && npx wrangler dev"
   },
   "dependencies": {
     "@rainbow-me/rainbowkit": "^2.2.8",
@@ -24,6 +23,7 @@
     "wagmi": "^2.17.5"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250803.0",
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",

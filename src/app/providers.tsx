@@ -18,7 +18,7 @@ import {
 } from "@tanstack/react-query";
 import { http } from 'wagmi';
 
-const config = getDefaultConfig({
+export const config = getDefaultConfig({
   appName: 'LessLimit',
   projectId: '12188b59ffef9b6a24935a4dd21b4d9f', // Valid project ID
   chains: [base], // Only Base network to avoid RPC issues

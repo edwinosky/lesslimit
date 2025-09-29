@@ -7,6 +7,8 @@ yarn-error.log*
 # Next.js build output
 .next/
 .output/
+out/
+/out/
 build/
 dist/
 
