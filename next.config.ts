@@ -67,6 +67,19 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true, // Allow build even with some lint errors
   },
+
+  // Proxy API requests to local Cloudflare Worker in development
+  async rewrites() {
+    if (process.env.NODE_ENV === 'development') {
+      return [
+        {
+          source: '/api/proxy/:path*',
+          destination: 'http://localhost:8788/api/proxy/:path*',
+        },
+      ];
+    }
+    return [];
+  },
 };
 
 export default nextConfig;

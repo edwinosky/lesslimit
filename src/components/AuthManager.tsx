@@ -129,6 +129,15 @@ export function AuthManager() {
 
         console.log('AuthManager: Authentication successful! Saving state...');
         saveAuthComplete(); // Guardar que completamos la autenticación
+
+        // Guardar user data para ownerId
+        const loginData = await loginResponse.json();
+        if (loginData && loginData.id) {
+          localStorage.setItem('userData', JSON.stringify({
+            id: loginData.id,
+            account: address
+          }));
+        }
         // No hacer window.location.reload() para evitar bucles
 
       } catch (error) {
